@@ -730,14 +730,14 @@ function ReplaceNumberWithCommas(shareNumber) {
 				jQuery("#"+documentHandle+" .doc-menu a:not(.doc-acta)").parent('li').removeClass("doc-acta");
 			}, 200));
 			//right positioned menu
-			jQuery(window).scroll(function(){
+			jQuery(window).scroll(debounce(function(){
 				if( jQuery("#"+documentHandle+" .doc-menuright.doc-menufixed").length > 0 ) {
 					var mleft = jQuery("#"+documentHandle).outerWidth()-jQuery("#"+documentHandle+" .doc-menuright.doc-menufixed").outerWidth();
 					jQuery("#"+documentHandle+" .doc-menuright.doc-menufixed").css('margin-left',mleft+'px');
 				} else {
 					jQuery("#"+documentHandle+" .doc-menuright").css('margin-left','0px');
 				}
-			});
+			}, 250);
 		});
 
 		/* Expand / collapse menus */
@@ -989,3 +989,20 @@ function ReplaceNumberWithCommas(shareNumber) {
 		});
 	}
 })(jQuery);
+/**
+ * Debounce events
+ * @param   {function} fn    callback function
+ * @param   {integer}  delay milliseconds to wait before running callback
+ * @returns {function} callback function
+ */
+function debounce(fn, delay) {
+    var timer = null;
+    return function () {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context, args);
+        }, delay);
+    };
+}
+
